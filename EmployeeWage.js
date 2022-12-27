@@ -12,6 +12,7 @@ let totalWorkingDays = 0
 let totalEmpWage = 0
 let dayCounter = 0
 let empDailyWageArray = new Array();
+let employeeDailyWageMap = new Map();
 
 function getWorkHrs(empCheck) {
 
@@ -27,10 +28,6 @@ function getWorkHrs(empCheck) {
 
 function calDailyWage(empHrs) {
     return empHrs * WAGE_PER_HOUR
-}
-
-function calculateDailyWage(empHrs) {
-    return empHrs * WAGE_PER_HOUR;
 }
 
 function totalWage(dailyWage) {
@@ -62,6 +59,12 @@ function isAnyPartTimeWage(dailyWage) {
     return dailyWage.includes("80");
 }
 
+function totalDaysWorked(numberOfDays, dailyWage) {
+    if (dailyWage > 0)
+        return numberOfDays + 1;
+    return numberOfDays;
+}
+
 while (totalEmpHrs <= MAX_HOURS_IN_MONTH && totalWorkingDays < NUM_OF_WORKING_DAYS) {
     totalWorkingDays++;
     let empCheck = Math.floor(Math.random() * 10) % 3;
@@ -69,6 +72,7 @@ while (totalEmpHrs <= MAX_HOURS_IN_MONTH && totalWorkingDays < NUM_OF_WORKING_DA
     let empHrs = getWorkHrs(empCheck);
     totalEmpHrs += empHrs;
     empDailyWageArray.push(calDailyWage(empHrs));
+    employeeDailyWageMap.set(totalWorkingDays, calDailyWage(empHrs));
 }
 
 
@@ -105,3 +109,7 @@ function totalDaysWorked(numberOfDays, dailyWage) {
     return numberOfDays;
 }
 console.log("Number of Days Employee Worked : " + empDailyWageArray.reduce(totalDaysWorked, 0));
+
+//UC8 - Store the day and daily wage along with total wage
+console.log(employeeDailyWageMap);
+console.log("Total Employee Wage : " + Array.from(employeeDailyWageMap.values()).reduce(totalWageUsingReduce, 0));
